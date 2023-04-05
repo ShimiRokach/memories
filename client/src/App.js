@@ -1,28 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getPosts } from './actions/posts'
+import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Posts from './components/Posts/Posts';
-import Form from './components/Form/Form';
-import { Grid } from '@mui/material';
+import Home from './components/Home/Home';
+import Auth from './components/Auth/Auth';
 
 const App = () => {
-    const [currentId, setCurrentId] = useState(0);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getPosts());
-    }, [dispatch]);
 
     return (
-        <Grid container>
-            <Grid item sm={7}>
-                <Posts setCurrentId={setCurrentId} />
-            </Grid>
-            <Grid item sm={4}>
-                <Form currentId={currentId} setCurrentId={setCurrentId} />
-            </Grid>
-        </Grid>
+        <BrowserRouter>
+            <Routes>
+                <Route path='/' exact Component={Home} />
+                <Route path='/auth' exact Component={Auth} />
+            </Routes>
+        </BrowserRouter>
     );
 };
 

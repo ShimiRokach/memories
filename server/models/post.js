@@ -4,9 +4,9 @@ const postSchema = mongoose.Schema({
     title: String,
     message: String,
     creator: String,
-    likeCount: {
-        type: Number,
-        default: 0,
+    likes: {
+        type: [String],
+        default: [],
     },
     createdAt: {
         type: Date,
@@ -14,6 +14,4 @@ const postSchema = mongoose.Schema({
     },
 })
 
-var Post = mongoose.model('Post', postSchema);
-
-export default Post;
+export default mongoose.model('Post', postSchema);;

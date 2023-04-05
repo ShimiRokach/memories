@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 
 const Post = ({ post, setCurrentId }) => {
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('profile'));
 
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -22,9 +23,13 @@ const Post = ({ post, setCurrentId }) => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" onClick={() => dispatch(likePost(post._id))}>Like {post.likeCount}</Button>
-                <Button size="small" onClick={() => dispatch(deletePost(post._id))}>Delete</Button>
-                <Button size="small" onClick={() => setCurrentId(post._id)}>Update</Button>
+                <Button size="small" onClick={() => dispatch(likePost(post._id))}>Like {post.likes.length}</Button>
+                {user?.result?._id === post?.creator && (
+                    <Button size="small" onClick={() => dispatch(deletePost(post._id))}>Delete</Button>
+                )}
+                {user?.result?._id === post?.creator && (
+                    <Button size="small" onClick={() => setCurrentId(post._id)}>Update</Button>
+                )}
             </CardActions>
         </Card>
     );
