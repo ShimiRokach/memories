@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { getPosts } from '../../actions/posts'
 import Posts from '../Posts/Posts';
@@ -16,8 +16,6 @@ const Home = () => {
         dispatch(getPosts());
     }, [dispatch]);
 
-    const data = useSelector((state) => state);
-    console.log(data);
     return (
         <Grid container>
             <Grid item sm={8}>

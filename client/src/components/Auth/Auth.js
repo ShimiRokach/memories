@@ -3,14 +3,17 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signIn, signUp } from '../../actions/auth'
 
-import { Typography, TextField, Button } from '@mui/material';
+import { Typography, TextField, Button, Container } from '@mui/material';
 
 const Auth = () => {
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const [user, setUser] = useState({ email: '', password: '', name: '' });
-    const [user2, setUser2] = useState({ email: '', password: '' });
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [isSignup, setIsSignup] = useState(false);
 
 
     const handleSubmit = (event) => {
@@ -18,42 +21,49 @@ const Auth = () => {
 
         dispatch(signUp(user));
 
-        navigate('/');
+        setTimeout(() => {
+            navigate('/');
+        }, 2000);
 
     }
 
-    const handleSubmit2 = (event) => {
-        event.preventDefault();
 
-        dispatch(signIn(user2));
-        navigate('/');
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }
 
-        // setTimeout(() => {
-        //     navigate('/');
-        // }, 2000);
+    const switchMode = () => {
+        setIsSignup(!isSignup);
     }
 
 
 
     return (
-        <div>
+        <Container sx={{ maxWidth: 'xs', textAlign: 'center' }}>
+            <Typography variant="h6">{isSignup ? 'Sign Up' : 'Sign In'}</Typography>
             <form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                <Typography variant="h6">Login</Typography>
+
+                {isSignup && (
+                    <>
+                        <TextField fullWidth label="Name" value={user.name} onChange={(e) => setUser({ ...user, name: e.target.value })} />
+                    </>)}
+
                 <TextField fullWidth label="Email" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} />
-                <TextField fullWidth label="Password" value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })} />
-                <TextField fullWidth label="Name" value={user.name} onChange={(e) => setUser({ ...user, name: e.target.value })} />
+                <TextField fullWidth label="Password" type={showPassword ? 'text' : 'password'} value={user.password} onChange={(e) => setUser({ ...user, password: e.target.value })}
+                    InputProps={{
+                        endAdornment: (
+                            <Button onClick={handleTogglePasswordVisibility}>
+                                {showPassword ? 'Hide' : 'Show'}
+                            </Button>
+                        )
+                    }} />
 
-                <Button variant="contained" color="primary" size="large" type="submit" fullWidth>SignUp</Button>
+                <Button variant="contained" color="primary" size="large" type="submit" fullWidth>{isSignup ? 'Sign Up' : 'Sign In'}</Button>
             </form>
 
-            <form autoComplete="off" noValidate onSubmit={handleSubmit2}>
-                <Typography variant="h6">Login</Typography>
-                <TextField fullWidth label="Email" value={user2.email} onChange={(e) => setUser2({ ...user2, email: e.target.value })} />
-                <TextField fullWidth label="Password" value={user2.password} onChange={(e) => setUser2({ ...user2, password: e.target.value })} />
+            <Button size="large" fullWidth onClick={switchMode}>{isSignup ? 'Already have an account ? Sign In' : "Don't have an account ? Sign Up"}</Button>
 
-                <Button variant="contained" color="primary" size="large" type="submit" fullWidth>Login</Button>
-            </form>
-        </div>
+        </Container>
     );
 };
 
