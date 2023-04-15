@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import decode from "jwt-decode";
 
 import { createPost, updatePost } from '../../actions/posts'
 
@@ -19,18 +18,9 @@ const Form = ({ currentId, setCurrentId }) => {
     useEffect(() => {
 
         setUser(JSON.parse(localStorage.getItem('profile')));
-        const token = user?.token;
-
-
-
-        if (token) {
-            const decodeToken = decode(token);
-
-            if (decodeToken.exp * 1000 < new Date().getTime()) logOut();
-        }
 
         if (post) setPostData(post);
-    }, [post, localStorage]);
+    }, [post]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -47,11 +37,6 @@ const Form = ({ currentId, setCurrentId }) => {
     const clear = () => {
         setPostData({ title: '', message: '' });
         setCurrentId(0);
-    }
-
-    const logOut = () => {
-        dispatch({ type: 'LOGOUT' });
-        navigate('/auth');
     }
 
     if (!user) {
@@ -73,7 +58,6 @@ const Form = ({ currentId, setCurrentId }) => {
                 <TextField fullWidth label="Message" value={postData.message} onChange={(e) => setPostData({ ...postData, message: e.target.value })} />
                 <Button variant="contained" color="primary" size="large" type="submit" fullWidth>Submit</Button>
                 <Button variant="contained" color="secondary" size="small" onClick={clear} fullWidth>Clear</Button>
-                <Button variant="contained" color="secondary" size="small" onClick={logOut} fullWidth>LogOut</Button>
             </form>
 
         </>

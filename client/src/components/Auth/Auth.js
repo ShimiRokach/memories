@@ -18,8 +18,12 @@ const Auth = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (isSignup) {
+            dispatch(signUp(user));
+        } else {
+            dispatch(signIn(user));
+        }
 
-        dispatch(signUp(user));
 
         setTimeout(() => {
             navigate('/');
